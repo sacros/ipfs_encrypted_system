@@ -1,1 +1,0 @@
-Used help from: https://www.thepolyglotdeveloper.com/2018/01/encrypt-decrypt-data-nodejs-crypto-library/

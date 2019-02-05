@@ -12,9 +12,8 @@ app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
+
 app.use(fileUpload());
-
-
 
 app.use(bodyParser.urlencoded({
     extended: true
@@ -23,7 +22,6 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 app.use("/ipfs/", ipfsRoutes);
-// console.log
 
 server.listen(config.server_port, "localhost", err => {
     if (err) throw err;
