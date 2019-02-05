@@ -2,12 +2,8 @@ var express = require('express');
 var fs = require('fs');
 
 const routes = express.Router();
-const {
-    Safe
-} = require('../libs/safe');
-const {
-    ipfsService
-} = require('../libs/ipfs');
+const { Safe } = require('../libs/safe');
+const { ipfsService } = require('../libs/ipfs');
 
 safe = new Safe();
 // ipfsService.add('yolo')
@@ -29,7 +25,8 @@ routes.route('/upload').post((req, res) => {
         error: "Argument 'pass' not present"
     });
     console.log("entering async");
-    safe.encryptAsync(req.files.file, req.body['pass'])
+    console.log("encrypting file:", req.files.file.data);
+    safe.encryptAsync(req.files.file.data, req.body['pass'])
         .then((result) => {
             console.log("got here", result);
             ipfsService.add(result)
@@ -44,7 +41,8 @@ routes.route('/upload').post((req, res) => {
 
 routes.get("/read", (req, res) => {
     pass = "password123";
-    hash = "QmYAjeA2731XmbzWVu9ojTbeAz7874x1HrypjfE97TWrZJ";
+    // hash = "QmYAjeA2731XmbzWVu9ojTbeAz7874x1HrypjfE97TWrZJ";
+    hash = "QmThGQzupdpwAX2dGx3Ac3QZfGbwr6pvwEhhoyj7o977Vh";
     ipfsService.cat(hash)
         .then((data) => {
             // console.log("____data____:",data)
@@ -59,8 +57,8 @@ routes.get("/read", (req, res) => {
                 // data = new Buffer(data);
                 console.log("data4", data);
                 console.log("Got data: ", data)
-
-                fs.writeFile('./tmp.pptx', data, error => {
+                result = new Buffer(JSON.parse(data.toString()), "utf8");
+                fs.writeFile('./tmp.pptx', result, error => {
                     if (error) {
                         console.log(error)
                     }

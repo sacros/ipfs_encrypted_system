@@ -14,7 +14,7 @@ class Safe {
                 var encrypted = Buffer.concat([cipher.update(new Buffer(JSON.stringify(data), "utf8")),cipher.final()]);
             } catch (exception) {
                 reject({
-                    message: exception.message
+                    message: exception.message,
                 });
             }
             FileSystem.writeFile(this.filePath, encrypted, error => {
@@ -22,7 +22,8 @@ class Safe {
                     reject(error)
                 }
                 resolve({
-                    message: "Encrypted!"
+                    message: "Encrypted!",
+                    file: encrypted
                 });
             });
         });
